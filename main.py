@@ -103,20 +103,20 @@ def process():
         create_chart(f"{csv_dir}/{dir_iter[i]}", axs.flat[i])
 
     pyplot.tight_layout()
-    fig.savefig(pwd + "/chart.png", dpi=100)
+    fig.savefig(chart_path, dpi=100)
 
 
-pwd = os.getcwd()
-cpp_dir = pwd + "/" + sys.argv[1]
+wd = sys.argv[1]
+cpp_dir = sys.argv[2]
 
-generated_dir = pwd + "/generated"
-massif_dir = pwd + "/massif"
-csv_dir = pwd + "/csv"
-chart_dir = pwd + "/charts"
+generated_dir = wd + "/generated"
+massif_dir = wd + "/massif"
+csv_dir = wd + "/csv"
+chart_path = wd + "/chart.png"
 
 regex = re.compile("time=(\\d+)\nmem_heap_B=(\\d+)\nmem_heap_extra_B=(\\d+)\nmem_stacks_B=(\\d+)")
 
-for directory in [generated_dir, massif_dir, csv_dir, chart_dir]:
+for directory in [generated_dir, massif_dir, csv_dir]:
     shutil.rmtree(directory, ignore_errors=True)
     os.mkdir(directory)
 
