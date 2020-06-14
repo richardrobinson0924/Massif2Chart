@@ -97,7 +97,7 @@ def process():
     dir_iter = os.listdir(csv_dir)
     rows, cols = get_optimal_dims(len(dir_iter))
 
-    fig, axs = pyplot.subplots(nrows=rows, ncols=cols, figsize=(15, 10))
+    fig, axs = pyplot.subplots(nrows=rows, ncols=cols, figsize=(15, 10), sharey='all')
 
     for i in range(len(dir_iter)):
         create_chart(f"{csv_dir}/{dir_iter[i]}", axs.flat[i])
