@@ -24,7 +24,7 @@ def build_executable(source: str, dest: str):
     print(f"-> Building {source}...", end='')
 
     subprocess.run(
-        ["/usr/bin/g++", source, "-std=c++17", "-isystem", "~/etl-18.1.3/include", "-o", dest],
+        ["/usr/bin/g++", source, "-std=c++17", "-isystem", "/home/pi/etl-18.1.3/include", "-o", dest],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
     )
