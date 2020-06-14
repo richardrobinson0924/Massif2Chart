@@ -56,6 +56,9 @@ def convert_to_csv(source: str, dest: str):
 
         for match in regex.finditer(text):
             (time, heap, _, stack) = match.groups()
+            if int(heap) & int(stack) & int(time) == 0:
+                continue
+
             out.write(f"{time},{heap},{stack}\n")
 
         out.write("\n")
