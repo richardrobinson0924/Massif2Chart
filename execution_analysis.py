@@ -23,7 +23,10 @@ def build_executable(source: str, dest: str):
     subprocess.run([
         "g++", source, home + "/nanobench.cpp", "-isystem", home + "/nanobench_include", "-isystem",
         home + "/etl-18.1.3/include", "-std=c++17", "-o", dest
-    ])
+    ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
 
     os.chmod(path=dest, mode=0o555)
 
@@ -47,7 +50,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     print(f"-> Creating chart from {source}...", end='')
 
     df = pandas.read_csv(source, header=0, sep=';')
-    df[['library', 'function']] = df.name.str.split('_', expand=True)
+    df[['library', 'function']] = df.name.str.split('_', expand=True, n=1)
     df.pivot('function', 'library', 'elapsed').plot(ax=ax, kind='bar')
 
     print(" Done")
