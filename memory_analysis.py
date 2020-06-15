@@ -82,8 +82,8 @@ def add_subplot(source: str, ax: pyplot.Axes):
     df = pandas.read_csv(source, header=0)
 
     for label in ['heap', 'stack']:
+        ax.axhline(y=df[label].median(), color='0.75')
         ax.plot(df['time'], df[label], label=label)
-        ax.axhline(y=df[label].median())
 
     ax.set_yscale('log')
     ax.set_ylabel("bytes allocated")
