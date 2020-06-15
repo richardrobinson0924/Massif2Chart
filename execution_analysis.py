@@ -8,7 +8,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_optimal_dims, get_base_name
+from utils import get_base_name, create_chart
 
 
 def build_executable(source: str, dest: str):
@@ -51,7 +51,13 @@ def add_subplot(source: str, ax: pyplot.Axes):
 
     df = pandas.read_csv(source, header=0, sep=';')
     df[['library', 'function']] = df.name.str.split('_', expand=True, n=1)
-    df.pivot('function', 'library', 'elapsed').plot(ax=ax, kind='bar')
+    df = df.pivot('function', 'library', 'elapsed')
+
+    normalized = df.div(df.max(axis=1), axis=0)
+    normalized.plot(ax=ax, kind='bar')
+
+    ax.set_ylabel('execution time, normalized')
+    ax.set_title(get_base_name(source))
 
     print(" Done")
 
@@ -67,17 +73,8 @@ def process():
 
     print("\nCreating subplots...")
 
-    dir_iter = os.listdir(csv_dir)
-    rows, cols = get_optimal_dims(len(dir_iter))
+    create_chart(csv_dir=csv_dir, chart_path=chart_path, subplot_builder=add_subplot)
 
-    fig, axs = pyplot.subplots(nrows=rows, ncols=cols, figsize=(15, 10), sharey='all', squeeze=False)
-
-    for i in range(len(dir_iter)):
-        add_subplot(f"{csv_dir}/{dir_iter[i]}", axs.flat[i])
-
-    print("\nBuilding graph...", end='')
-    pyplot.tight_layout()
-    fig.savefig(chart_path, dpi=100)
     print(" Done")
 
 

@@ -9,7 +9,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, get_optimal_dims, create_chart
+from utils import get_base_name, create_chart
 
 
 def build_executable(source: str, dest: str):
