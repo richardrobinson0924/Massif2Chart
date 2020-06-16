@@ -8,7 +8,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, create_chart, get_arg
+from utils import get_base_name, create_chart, get_arg, colors
 
 
 def build_executable(source: str, dest: str):
@@ -22,7 +22,7 @@ def build_executable(source: str, dest: str):
 
     subprocess.run([
         "g++", source, home + "/nanobench.cpp", "-isystem", home + "/nanobench_include", "-isystem",
-                       home + "/etl-18.1.3/include", "-std=c++17", "-o", dest
+        home + "/etl-18.1.3/include", "-std=c++17", "-o", dest
     ],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
@@ -54,8 +54,9 @@ def add_subplot(source: str, ax: pyplot.Axes):
     df = df.pivot('function', 'library', 'elapsed')
 
     normalized = df.div(df.max(axis=1), axis=0)
-    normalized.plot(ax=ax, kind='bar')
+    normalized.plot(ax=ax, kind='bar', color=colors)
 
+    ax.legend(loc='upper left')
     ax.set_ylabel('execution time, normalized')
     ax.set_title(get_base_name(source) + suffix)
 

@@ -6,6 +6,9 @@ from matplotlib import pyplot
 from typing import Callable
 
 
+colors = ['blue', 'purple']
+
+
 def get_arg(flag: str, default: str = '') -> str:
     """
     Finds and returns the command line argument associated with the specified `flag`,
@@ -58,4 +61,6 @@ def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, 
 
     print("\nBuilding graph...", end='')
     pyplot.tight_layout()
+    pyplot.xticks(rotation=45, ha='right')
+
     fig.savefig(chart_path, dpi=100)
