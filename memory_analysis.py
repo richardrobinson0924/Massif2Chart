@@ -89,6 +89,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     ax.set_ylabel("bytes allocated")
     ax.set_xlabel("time (bytes)")
 
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
     ax.legend(loc='upper left')
     ax.set_title(get_base_name(source) + suffix)
 

@@ -6,7 +6,7 @@ from matplotlib import pyplot
 from typing import Callable
 
 
-colors = ['blue', 'purple']
+colors = ['tab:blue', 'tab:purple']
 
 
 def get_arg(flag: str, default: str = '') -> str:
@@ -61,6 +61,5 @@ def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, 
 
     print("\nBuilding graph...", end='')
     pyplot.tight_layout()
-    pyplot.xticks(rotation=45, ha='right')
 
     fig.savefig(chart_path, dpi=100)

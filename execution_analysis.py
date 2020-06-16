@@ -56,6 +56,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     normalized = df.div(df.max(axis=1), axis=0)
     normalized.plot(ax=ax, kind='bar', color=colors)
 
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
     ax.legend(loc='upper left')
     ax.set_ylabel('execution time, normalized')
     ax.set_title(get_base_name(source) + suffix)
