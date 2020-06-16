@@ -9,7 +9,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, create_chart, get_arg, colors
+from utils import get_base_name, create_chart, get_arg, Color
 
 
 def build_executable(source: str, dest: str):
@@ -81,9 +81,9 @@ def add_subplot(source: str, ax: pyplot.Axes):
 
     df = pandas.read_csv(source, header=0)
 
-    for color, label in zip(colors, ['heap', 'stack']):
+    for color, label in zip(Color, ['heap', 'stack']):
         ax.axhline(y=df[label].median(), color='0.75')
-        ax.plot(df['time'], df[label], label=label, color=color)
+        ax.plot(df['time'], df[label], label=label, color=color.value)
 
     ax.set_yscale('log')
     ax.set_ylabel("bytes allocated")

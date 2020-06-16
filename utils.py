@@ -1,12 +1,15 @@
 import os
 import sys
+from enum import Enum
 from math import sqrt, ceil
-
-from matplotlib import pyplot
 from typing import Callable
 
+from matplotlib import pyplot
 
-colors = ['tab:blue', 'tab:purple']
+
+class Color(Enum):
+    BLUE = '#348ABD'
+    PURPLE = '#7A68A6'
 
 
 def get_arg(flag: str, default: str = '') -> str:

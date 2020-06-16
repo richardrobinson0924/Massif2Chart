@@ -8,7 +8,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, create_chart, get_arg, colors
+from utils import get_base_name, create_chart, get_arg, Color
 
 
 def build_executable(source: str, dest: str):
@@ -54,7 +54,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     df = df.pivot('function', 'library', 'elapsed')
 
     normalized = df.div(df.max(axis=1), axis=0)
-    normalized.plot(ax=ax, kind='bar', color=colors)
+    normalized.plot(ax=ax, kind='bar', color=[c.value for c in Color])
 
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
     ax.legend(loc='upper left')
