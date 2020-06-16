@@ -126,6 +126,7 @@ chart_path = memory_dir + "/chart.png"
 regex = re.compile("time=(\\d+)\nmem_heap_B=(\\d+)\nmem_heap_extra_B=(\\d+)\nmem_stacks_B=(\\d+)")
 
 shutil.rmtree(memory_dir, ignore_errors=True)
+os.mkdir(memory_dir)
 
 for directory in [generated_dir, massif_dir, csv_dir]:
     os.mkdir(directory)

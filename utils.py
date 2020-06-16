@@ -6,8 +6,16 @@ from matplotlib import pyplot
 from typing import Callable
 
 
-def get_arg(arg: str, default: str = '') -> str:
-    return sys.argv[sys.argv.index(arg) + 1] if arg in sys.argv else default
+def get_arg(flag: str, default: str = '') -> str:
+    """
+    Finds and returns the command line argument associated with the specified `flag`,
+    or `default` if the flag is not found.
+
+    :param flag: the command line flag to attempt to find
+    :param default: the string to return if `flag` does not exist
+    :return: the command line argument following `flag`, or `default` if the flag does not exist
+    """
+    return sys.argv[sys.argv.index(flag) + 1] if flag in sys.argv else default
 
 
 def get_base_name(path: str) -> str:

@@ -22,7 +22,7 @@ def build_executable(source: str, dest: str):
 
     subprocess.run([
         "g++", source, home + "/nanobench.cpp", "-isystem", home + "/nanobench_include", "-isystem",
-        home + "/etl-18.1.3/include", "-std=c++17", "-o", dest
+                       home + "/etl-18.1.3/include", "-std=c++17", "-o", dest
     ],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
@@ -88,6 +88,7 @@ csv_dir = benchmark_dir + "/csv"
 chart_path = benchmark_dir + "/chart.png"
 
 shutil.rmtree(benchmark_dir, ignore_errors=True)
+os.mkdir(benchmark_dir)
 
 for directory in [generated_dir, csv_dir]:
     os.mkdir(directory)
