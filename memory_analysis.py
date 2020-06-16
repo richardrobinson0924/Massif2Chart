@@ -114,19 +114,20 @@ def process():
     print(" Done")
 
 
-wd = os.getcwd()
+memory_dir = os.getcwd() + "/memory"
 cpp_dir = sys.argv[1]
 suffix = get_arg('--suffix')
 
-generated_dir = wd + "/generated_memory"
-massif_dir = wd + "/massif_memory"
-csv_dir = wd + "/csv_memory"
-chart_path = wd + "/chart_memory.png"
+generated_dir = memory_dir + "/generated"
+massif_dir = memory_dir + "/massif"
+csv_dir = memory_dir + "/csv"
+chart_path = memory_dir + "/chart.png"
 
 regex = re.compile("time=(\\d+)\nmem_heap_B=(\\d+)\nmem_heap_extra_B=(\\d+)\nmem_stacks_B=(\\d+)")
 
+shutil.rmtree(memory_dir, ignore_errors=True)
+
 for directory in [generated_dir, massif_dir, csv_dir]:
-    shutil.rmtree(directory, ignore_errors=True)
     os.mkdir(directory)
 
 process()

@@ -8,7 +8,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, create_chart
+from utils import get_base_name, create_chart, get_arg
 
 
 def build_executable(source: str, dest: str):
@@ -78,15 +78,18 @@ def process():
     print(" Done")
 
 
-wd = os.getcwd()
+benchmark_dir = os.getcwd() + "/speed_benchmark"
 cpp_dir = sys.argv[1]
+suffix = get_arg('--suffix')
 
-generated_dir = wd + "/generated_benchmark"
-csv_dir = wd + "/csv_benchmark"
-chart_path = wd + "/chart_benchmark.png"
+generated_dir = benchmark_dir + "/generated"
+massif_dir = benchmark_dir + "/massif"
+csv_dir = benchmark_dir + "/csv"
+chart_path = benchmark_dir + "/chart.png"
+
+shutil.rmtree(benchmark_dir, ignore_errors=True)
 
 for directory in [generated_dir, csv_dir]:
-    shutil.rmtree(directory, ignore_errors=True)
     os.mkdir(directory)
 
 process()
