@@ -78,7 +78,7 @@ def process():
     print(" Done")
 
 
-benchmark_dir = os.getcwd() + "/speed_benchmark"
+benchmark_dir = os.getcwd() + "/execution_time_benchmark"
 cpp_dir = sys.argv[1]
 suffix = get_arg('--suffix')
 

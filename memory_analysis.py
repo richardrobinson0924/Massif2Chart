@@ -114,7 +114,7 @@ def process():
     print(" Done")
 
 
-memory_dir = os.getcwd() + "/memory"
+memory_dir = os.getcwd() + "/memory_benchmark"
 cpp_dir = sys.argv[1]
 suffix = get_arg('--suffix')
 
