@@ -9,7 +9,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, create_chart
+from utils import get_base_name, create_chart, get_arg
 
 
 def build_executable(source: str, dest: str):
@@ -89,7 +89,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     ax.set_ylabel("bytes allocated")
     ax.set_xlabel("time (bytes)")
     ax.legend()
-    ax.set_title(get_base_name(source))
+    ax.set_title(get_base_name(source) + suffix)
 
     print(" Done")
 
@@ -115,7 +115,8 @@ def process():
 
 
 wd = os.getcwd()
-cpp_dir = sys.argv[1] if len(sys.argv) > 1 else '.'
+cpp_dir = sys.argv[1]
+suffix = get_arg('--suffix')
 
 generated_dir = wd + "/generated_memory"
 massif_dir = wd + "/massif_memory"

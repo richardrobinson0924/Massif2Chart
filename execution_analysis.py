@@ -57,7 +57,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     normalized.plot(ax=ax, kind='bar')
 
     ax.set_ylabel('execution time, normalized')
-    ax.set_title(get_base_name(source))
+    ax.set_title(get_base_name(source) + suffix)
 
     print(" Done")
 

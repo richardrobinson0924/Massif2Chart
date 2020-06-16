@@ -1,8 +1,13 @@
 import os
+import sys
 from math import sqrt, ceil
 
 from matplotlib import pyplot
 from typing import Callable
+
+
+def get_arg(arg: str, default: str = '') -> str:
+    return sys.argv[sys.argv.index(arg) + 1] if arg in sys.argv else default
 
 
 def get_base_name(path: str) -> str:
