@@ -89,6 +89,28 @@ def add_subplot(source: str, ax: pyplot.Axes):
     print(" Done")
 
 
+def collate_stats(source: str, dest: str):
+    """
+    Collects various stats from the CSV file located at `source`, including the median, min, max, and std dev
+    """
+    print(f"-> Collecting statistics from {source}...", end='')
+
+    df = pandas.read_csv(source, header=0)
+
+    with open(dest, mode='a') as f:
+        f.write('\n' + get_base_name(source) + '\n')
+
+    stats = {}
+    for label in ['heap', 'stack']:
+        col = df[label]
+        stats[label] = [col.median(), col.min(), col.max(), col.std()]
+
+    stats_df = pandas.DataFrame(data=stats, index=['median', 'min', 'max', 'stdev'])
+    stats_df.to_csv(dest, mode='a')
+
+    print("Done")
+
+
 def process():
     print("\nBuilding files...")
     for path in os.listdir(cpp_dir):
@@ -101,6 +123,10 @@ def process():
     print("\nParsing...")
     for path in os.listdir(massif_dir):
         convert_to_csv(f"{massif_dir}/{path}", f"{csv_dir}/{get_base_name(path)}.csv")
+
+    print("\nWriting stats...")
+    for path in os.listdir(csv_dir):
+        collate_stats(path, stats_path)
 
     print("\nCreating subplots...")
 
@@ -116,7 +142,10 @@ suffix = get_arg('--suffix')
 generated_dir = memory_dir + "/generated"
 massif_dir = memory_dir + "/massif"
 csv_dir = memory_dir + "/csv"
+stats_path = memory_dir + "/stats.csv"
 chart_path = memory_dir + "/chart.png"
+
+os.remove(stats_path)
 
 regex = re.compile("time=(\\d+)\nmem_heap_B=(\\d+)\nmem_heap_extra_B=(\\d+)\nmem_stacks_B=(\\d+)")
 
