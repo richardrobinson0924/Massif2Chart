@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 from enum import Enum
 from math import sqrt, ceil
@@ -10,6 +11,12 @@ from matplotlib import pyplot
 class Color(Enum):
     BLUE = '#348ABD'
     PURPLE = '#7A68A6'
+
+
+def _configure_axes(ax: pyplot.Axes, title: str):
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
+    ax.legend(loc='upper left')
+    ax.set_title(title)
 
 
 def get_arg(flag: str, default: str = '') -> str:
@@ -45,11 +52,12 @@ def get_optimal_dims(x: int) -> (int, int):
     return int(round(sqrt(x))), int(ceil(sqrt(x)))
 
 
-def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, pyplot.Axes], None]):
+def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, pyplot.Axes], None], title_suffix: str):
     """
     Creates a chart with each subplot corresponding to a CSV data file in `csv_dir`. Each subplot is constructed via
     `subplot_builder`. The chart is then exported as a .png image to the path specified by `chart_path`
 
+    :param title_suffix:
     :param chart_path: the fully-qualified path name to the generated .png image
     :param csv_dir: a directory exclusively containing data files formatted for this program
     :param subplot_builder: a function whose signature is `(str, pyplot.Axes) -> None`
@@ -60,7 +68,11 @@ def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, 
     fig, axs = pyplot.subplots(nrows=rows, ncols=cols, figsize=(15, 10), sharey='all', squeeze=False)
 
     for i in range(len(dir_iter)):
-        subplot_builder(f"{csv_dir}/{dir_iter[i]}", axs.flat[i])
+        ax = axs.flat[i]
+        src = f"{csv_dir}/{dir_iter[i]}"
+
+        subplot_builder(src, ax)
+        _configure_axes(ax, title=get_base_name(src) + title_suffix)
 
     print("\nBuilding graph...", end='')
     pyplot.tight_layout()

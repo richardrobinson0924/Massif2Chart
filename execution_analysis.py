@@ -56,11 +56,7 @@ def add_subplot(source: str, ax: pyplot.Axes):
     normalized = df.div(df.max(axis=1), axis=0)
     normalized.plot(ax=ax, kind='bar', color=[c.value for c in Color])
 
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
-    ax.legend(loc='upper left')
     ax.set_ylabel('execution time, normalized')
-    ax.set_title(get_base_name(source) + suffix)
-
     print(" Done")
 
 
@@ -75,7 +71,7 @@ def process():
 
     print("\nCreating subplots...")
 
-    create_chart(csv_dir=csv_dir, chart_path=chart_path, subplot_builder=add_subplot)
+    create_chart(csv_dir=csv_dir, chart_path=chart_path, subplot_builder=add_subplot, title_suffix=suffix)
 
     print(" Done")
 
