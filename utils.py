@@ -19,6 +19,10 @@ def _configure_axes(ax: pyplot.Axes, title: str):
     ax.set_title(title)
 
 
+def get_arg_option(flag: str) -> bool:
+    return flag in sys.argv
+
+
 def get_arg(flag: str, default: Optional[str] = None) -> Optional[str]:
     """
     Finds and returns the command line argument associated with the specified `flag`,
@@ -49,7 +53,7 @@ def get_optimal_dims(x: int) -> (int, int):
     :param x: then number of elements
     :return: (rows, cols)
     """
-    return int(round(sqrt(x))), int(ceil(sqrt(x)))
+    return int(ceil(sqrt(x))), int(round(sqrt(x)))
 
 
 def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, pyplot.Axes], None], title_suffix: str):
@@ -62,7 +66,7 @@ def create_chart(csv_dir: str, chart_path: str, subplot_builder: Callable[[str, 
     :param csv_dir: a directory exclusively containing data files formatted for this program
     :param subplot_builder: a function whose signature is `(str, pyplot.Axes) -> None`
     """
-    dir_iter = os.listdir(csv_dir)
+    dir_iter = sorted(os.listdir(csv_dir))
     rows, cols = get_optimal_dims(len(dir_iter))
 
     fig, axs = pyplot.subplots(nrows=rows, ncols=cols, figsize=(15, 10), sharey='all', squeeze=False)

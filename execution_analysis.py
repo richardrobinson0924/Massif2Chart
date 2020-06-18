@@ -60,24 +60,13 @@ def add_subplot(source: str, ax: pyplot.Axes):
     print(" Done")
 
 
-def shortcut_add_subplot(source: str, ax: pyplot.Axes):
-    print(f"-> Creating chart from {source}...", end='')
-    df = pandas.read_csv(source, header=0, sep=';')
-
-    normalized = df.div(df.max(axis=1), axis=0)
-    normalized.plot(ax=ax, kind='bar', color=[c.value for c in Color])
-
-    ax.set_ylabel('execution time, normalized')
-    print(" Done")
-
-
 def process():
     print("\nBuilding files...")
-    for path in os.listdir(cpp_dir):
+    for path in sorted(os.listdir(cpp_dir)):
         build_executable(f"{cpp_dir}/{path}", f"{generated_dir}/{get_base_name(path)}")
 
     print("\nExecuting benchmarks...")
-    for path in os.listdir(generated_dir):
+    for path in sorted(os.listdir(generated_dir)):
         run_benchmark(f"{generated_dir}/{path}", f"{csv_dir}/{get_base_name(path)}.csv")
 
     print("\nCreating subplots...")
@@ -98,7 +87,7 @@ csv_dir = benchmark_dir + "/csv"
 chart_path = benchmark_dir + "/chart.png"
 
 if data_path is not None:
-    create_chart(csv_dir=data_path, chart_path=chart_path, subplot_builder=shortcut_add_subplot, title_suffix=suffix)
+    create_chart(csv_dir=data_path, chart_path=chart_path, subplot_builder=add_subplot, title_suffix=suffix)
 else:
     shutil.rmtree(benchmark_dir, ignore_errors=True)
     os.mkdir(benchmark_dir)

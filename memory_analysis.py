@@ -9,7 +9,7 @@ import sys
 import pandas
 from matplotlib import pyplot
 
-from utils import get_base_name, create_chart, get_arg, Color
+from utils import get_base_name, create_chart, get_arg, Color, get_arg_option
 
 
 def build_executable(source: str, dest: str):
@@ -113,15 +113,15 @@ def collate_stats(source: str, dest: str):
 
 def process():
     print("\nBuilding files...")
-    for path in os.listdir(cpp_dir):
+    for path in sorted(os.listdir(cpp_dir)):
         build_executable(f"{cpp_dir}/{path}", f"{generated_dir}/{get_base_name(path)}")
 
     print("\nRunning massif...")
-    for path in os.listdir(generated_dir):
+    for path in sorted(os.listdir(generated_dir)):
         run_massif(f"{generated_dir}/{path}", f"{massif_dir}/{get_base_name(path)}.txt")
 
     print("\nParsing...")
-    for path in os.listdir(massif_dir):
+    for path in sorted(os.listdir(massif_dir)):
         convert_to_csv(f"{massif_dir}/{path}", f"{csv_dir}/{get_base_name(path)}.csv")
 
     generate_results(source=csv_dir, dest=chart_path)
@@ -140,6 +140,7 @@ def generate_results(source: str, dest: str):
 
 
 memory_dir = os.getcwd() + "/memory_benchmark"
+
 cpp_dir = sys.argv[1]
 suffix = get_arg('--suffix')
 data_path = get_arg('--data')
