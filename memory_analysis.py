@@ -124,13 +124,17 @@ def process():
     for path in os.listdir(massif_dir):
         convert_to_csv(f"{massif_dir}/{path}", f"{csv_dir}/{get_base_name(path)}.csv")
 
+    generate_results(source=csv_dir, dest=chart_path)
+
+
+def generate_results(source: str, dest: str):
     print("\nWriting stats...")
-    for path in os.listdir(csv_dir):
-        collate_stats(path, stats_path)
+    for path in os.listdir(source):
+        collate_stats(f"{source}/{path}", stats_path)
 
     print("\nCreating subplots...")
 
-    create_chart(csv_dir=csv_dir, chart_path=chart_path, subplot_builder=add_subplot, title_suffix=suffix)
+    create_chart(csv_dir=source, chart_path=dest, subplot_builder=add_subplot, title_suffix=suffix)
 
     print(" Done")
 
@@ -138,6 +142,7 @@ def process():
 memory_dir = os.getcwd() + "/memory_benchmark"
 cpp_dir = sys.argv[1]
 suffix = get_arg('--suffix')
+data_path = get_arg('--data')
 
 generated_dir = memory_dir + "/generated"
 massif_dir = memory_dir + "/massif"
@@ -145,16 +150,20 @@ csv_dir = memory_dir + "/csv"
 stats_path = memory_dir + "/stats.csv"
 chart_path = memory_dir + "/chart.png"
 
-os.remove(stats_path)
+if os.path.exists(stats_path):
+    os.remove(stats_path)
 
-regex = re.compile("time=(\\d+)\nmem_heap_B=(\\d+)\nmem_heap_extra_B=(\\d+)\nmem_stacks_B=(\\d+)")
+if data_path is not None:
+    generate_results(data_path, chart_path)
+else:
+    regex = re.compile("time=(\\d+)\nmem_heap_B=(\\d+)\nmem_heap_extra_B=(\\d+)\nmem_stacks_B=(\\d+)")
 
-shutil.rmtree(memory_dir, ignore_errors=True)
-os.mkdir(memory_dir)
+    shutil.rmtree(memory_dir, ignore_errors=True)
+    os.mkdir(memory_dir)
 
-for directory in [generated_dir, massif_dir, csv_dir]:
-    os.mkdir(directory)
+    for directory in [generated_dir, massif_dir, csv_dir]:
+        os.mkdir(directory)
 
-process()
+    process()
 
 print("\nComplete.")

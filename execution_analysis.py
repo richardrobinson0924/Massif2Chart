@@ -60,6 +60,17 @@ def add_subplot(source: str, ax: pyplot.Axes):
     print(" Done")
 
 
+def shortcut_add_subplot(source: str, ax: pyplot.Axes):
+    print(f"-> Creating chart from {source}...", end='')
+    df = pandas.read_csv(source, header=0, sep=';')
+
+    normalized = df.div(df.max(axis=1), axis=0)
+    normalized.plot(ax=ax, kind='bar', color=[c.value for c in Color])
+
+    ax.set_ylabel('execution time, normalized')
+    print(" Done")
+
+
 def process():
     print("\nBuilding files...")
     for path in os.listdir(cpp_dir):
@@ -79,18 +90,22 @@ def process():
 benchmark_dir = os.getcwd() + "/execution_time_benchmark"
 cpp_dir = sys.argv[1]
 suffix = get_arg('--suffix')
+data_path = get_arg('--data')
 
 generated_dir = benchmark_dir + "/generated"
 massif_dir = benchmark_dir + "/massif"
 csv_dir = benchmark_dir + "/csv"
 chart_path = benchmark_dir + "/chart.png"
 
-shutil.rmtree(benchmark_dir, ignore_errors=True)
-os.mkdir(benchmark_dir)
+if data_path is not None:
+    create_chart(csv_dir=data_path, chart_path=chart_path, subplot_builder=shortcut_add_subplot, title_suffix=suffix)
+else:
+    shutil.rmtree(benchmark_dir, ignore_errors=True)
+    os.mkdir(benchmark_dir)
 
-for directory in [generated_dir, csv_dir]:
-    os.mkdir(directory)
+    for directory in [generated_dir, csv_dir]:
+        os.mkdir(directory)
 
-process()
+    process()
 
 print("\nComplete.")

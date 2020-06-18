@@ -3,7 +3,7 @@ import subprocess
 import sys
 from enum import Enum
 from math import sqrt, ceil
-from typing import Callable
+from typing import Callable, Optional
 
 from matplotlib import pyplot
 
@@ -19,13 +19,13 @@ def _configure_axes(ax: pyplot.Axes, title: str):
     ax.set_title(title)
 
 
-def get_arg(flag: str, default: str = '') -> str:
+def get_arg(flag: str, default: Optional[str] = None) -> Optional[str]:
     """
     Finds and returns the command line argument associated with the specified `flag`,
     or `default` if the flag is not found.
 
     :param flag: the command line flag to attempt to find
-    :param default: the string to return if `flag` does not exist
+    :param default: the string to return if `flag` does not exist, or `None`
     :return: the command line argument following `flag`, or `default` if the flag does not exist
     """
     return sys.argv[sys.argv.index(flag) + 1] if flag in sys.argv else default
